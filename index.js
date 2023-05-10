@@ -16,10 +16,12 @@ app.get("/", (req, res) => {
 });
 
 app.get("/api/whoami", (req, res) => {
-  const ipAdress = req.headers["x-forwarded-for"].split(",")[0];
-  console.log(ipAdress);
+  const ipAddress =
+    (req.headers["x-forwarded-for"] &&
+      req.headers["x-forwarded-for"].split(",")[0]) ||
+    req.socket.remoteAddress;
   res.status(200).json({
-    ipadress: req.headers["x-forwarded-for"] || req.socket.remoteAddress,
+    ipaddress: ipAddress,
     language: req.headers["accept-language"],
     software: req.headers["user-agent"],
   });
