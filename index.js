@@ -10,17 +10,13 @@ app.use(cors({ optionsSuccessStatus: 200 }));
 const assets = __dirname + "/assets";
 app.use("/assets", express.static(assets));
 
-app.set("trust proxy", true);
-
 const fileHtml = __dirname + "/public/index.html";
 app.get("/", (req, res) => {
   res.sendFile(fileHtml);
 });
 
 app.get("/api/whoami", (req, res) => {
-  console.log("GET");
-  const ipAdress = req.headers["x-forwarded-for"];
-  console.log(req.ip);
+  const ipAdress = req.headers["x-forwarded-for"].split(",")[0];
   console.log(ipAdress);
   res.status(200).json({
     ipadress: req.headers["x-forwarded-for"] || req.socket.remoteAddress,
